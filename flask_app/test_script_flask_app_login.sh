@@ -1,9 +1,12 @@
 # test script for flask_app_login.py -- use in Virtualbox VM, not in Docker
 # programm flask_app_login needs to be running
+PORT=5555
 echo "Deleting all test records"
 curl -k -X DELETE "https://127.0.0.1:5555/delete/all"
-INSECURE_USER="USER_INSECURE_007"
-INSECURE_PW="123456007"
+INSECURE_USER="TS_INSECURE"
+INSECURE_PW="PW_uncrypted"
+SECURE_USER="Anas"
+SECURE_PW="test123"
 echo 'Creating new user v1 insecure'
 curl -k -X POST -F 'username='$INSECURE_USER -F 'password='$INSECURE_PW 'https://127.0.0.1:5555/signup/v1'
 echo "Testing login v1"

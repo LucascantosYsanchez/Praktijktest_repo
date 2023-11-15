@@ -6,7 +6,7 @@ import hashlib
 
 microweb_app = Flask(__name__)
 
-db_name = 'login.db'
+db_name = 'user.db'
 
 #### RE-INTIALIZING DATABASE => deleting all records from test database
 @microweb_app.route('/delete/all', methods=['POST', 'DELETE'])
@@ -103,9 +103,29 @@ def login_v2():
 
 #### HOME
 @microweb_app.route('/')
-def main():
-    return render_template("index.html")
+def account():
+    return render_template("account.html")
+    
+@microweb_app.route('/register', methods=['POST'])
+def register():
+    username = request.form['username']
+    password = request.form['password']
+
+    # Hash the password for security
+    hash_value = hashlib.sha256(password.encode()).hexdigest()
+ 
+    # Insert user data into the USER_HASH table
+    db_conn = sqlite3.connect(db_name)
+    c = db_conn.cursor()
+    try:
+        c.execute("INSERT INTO USER_HASH (USERNAME, HASH) VALUES (?, ?)", (username, hash_value))
+        db_conn.commit()
+        db_conn.close()
+        return "Registration successful"
+    except sqlite3.IntegrityError:
+        db_conn.close()
+        return "Username is already registered"
 
 #### MAIN
-if __name__ == "__main__":
-    microweb_app.run(host="0.0.0.0", port=5555, ssl_context='adhoc')
+if __name__ =="__main__":
+    microweb_app.run(host="127.0.0.1", port=8802, ssl_context="adhoc")

@@ -11,12 +11,6 @@ SSH_PORT="22"
 USER="developer" 
 PW="C1sco12345"
 ### EXEC
-sshCli = ConnectHandler(
-    device_type="cisco_ios",
-    host=RTR,
-    port=SSH_PORT,
-    username=USER,
-    password=PW
-    )
+
 output=sshCli.send_command("show version")
 print(output)
